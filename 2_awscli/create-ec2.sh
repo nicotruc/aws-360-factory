@@ -53,7 +53,7 @@ echo "Got Security Group Id: ${EC2_SG_ID}"
 
 echo "Provisioning EC2 instance..."
 
-### TODO
+EC2_PROVISION=$(aws ec2 run-instances --image-id "${EC2_AMI_ID}" --count=1 --instance-type "t2.micro" --key-name "ESIEE" --security-group-ids "${EC2_SG_ID}" --subnet-id "${EC2_SUBNET_ID}")
 
 echo "Ec2 Instance ready, here are the details:"
 echo ${EC2_PROVISION}
