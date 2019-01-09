@@ -6,15 +6,15 @@ set -e
 # Variable definition
 ######################################################################
 
+export AWS_DEFAULT_OUTPUT=text
 
 ######################################################################
 # Get the AMI_ID
 ######################################################################
 
 echo "Getting AMI Id..."
-
-# TODO
-
+EC2_AMI_NAME="ubuntu/images/hvm-ssd/ubuntu-xenial-*"
+EC2_AMI_ID=$(aws ec2 describe-images --filters "Name=name,Values=${EC2_AMI_NAME}" --query 'reverse(sort_by(Images, &CreationDate)) | [0].ImageId')
 echo "Got AMI Id: ${EC2_AMI_ID}"
 
 ######################################################################
@@ -23,7 +23,7 @@ echo "Got AMI Id: ${EC2_AMI_ID}"
 
 echo "Getting VPC Id..."
 
-### TODO
+EC2_VPC_ID=$(aws ec2 describe-vpcs --query 'Vpcs[?IsDefault] | [0].VpcId')
 
 echo "Got VPC Id: ${EC2_VPC_ID}"
 
@@ -33,7 +33,7 @@ echo "Got VPC Id: ${EC2_VPC_ID}"
 
 echo "Getting Subnet Id..."
 
-### TODO
+EC2_SUBNET_ID=$(aws ec2 describe-subnets --query "Subnets[?VpcId == '${EC2_VPC_ID}' && AvailabilityZone == 'us-east-1b'] | [0].SubnetId")
 
 echo "Got Subnet Id: ${EC2_SUBNET_ID}"
 
@@ -43,7 +43,7 @@ echo "Got Subnet Id: ${EC2_SUBNET_ID}"
 
 echo "Getting Security Group Id..."
 
-### TODO
+EC2_SG_ID=$(aws ec2 describe-security-groups --query "SecurityGroups[?VpcId == '${EC2_VPC_ID}' && GroupName == 'default'] | [0].GroupId")
 
 echo "Got Security Group Id: ${EC2_SG_ID}"
 
